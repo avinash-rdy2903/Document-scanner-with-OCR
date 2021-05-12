@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+from scipy.ndimage import interpolation as inter
 def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
     dim = None
     (h, w) = image.shape[:2]
@@ -25,6 +26,35 @@ def get_sorted_contours_bounding_box(cnts,method='left-to-right'):
                                         key=lambda b: b[1][i], reverse=reverse))
 
 	return cnts, boundingBoxes
+def find_score(arr, angle):
+    data = inter.rotate(arr, angle, reshape=False, order=0)
+    hist = np.sum(data, axis=1)
+    score = np.sum((hist[1:] - hist[:-1]) ** 2)
+    return hist, score
+def skew_correction(img):
+	wd, ht = img.shape[0],img.shape[1]
+	pix = np.array(cv2.cvtColor(img,cv2.COLOR_BGR2GRAY), np.uint8)
+
+	bin_img = 1 - (pix / 255.0).astype('int8')
+	cv2.imwrite('binary.png',bin_img)
+
+	delta = 1
+	limit = 5
+	angles = np.arange(-limit, limit+delta, delta)
+	best_angle=-9999999
+	best_score=-9999999
+	for angle in angles:
+		hist, score = find_score(bin_img, angle)
+		if(best_score<score):
+			best_score = score
+			best_angle = angle
+	print('Best angle: {}'.format(best_angle))
+	# correct skew
+	data = inter.rotate(img, best_angle, reshape=False, order=0)
+	# img = cv2.cvtColor(data,cv2.COLOR_GRAY2BGR)
+	data = cv2.GaussianBlur(data,(7,7),0)
+	return data
+
 def order_points(pts):
 	rect = np.zeros((4, 2), dtype = "float32")
 
