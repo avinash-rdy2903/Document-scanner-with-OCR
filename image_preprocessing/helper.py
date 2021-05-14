@@ -50,9 +50,8 @@ def skew_correction(img):
 			best_angle = angle
 	print('Best angle: {}'.format(best_angle))
 	# correct skew
-	data = inter.rotate(img, best_angle, reshape=False, order=0)
+	data = inter.rotate(img, best_angle, reshape=False, order=0,mode='reflect')
 	# img = cv2.cvtColor(data,cv2.COLOR_GRAY2BGR)
-	data = cv2.GaussianBlur(data,(7,7),0)
 	return data
 
 def order_points(pts):
