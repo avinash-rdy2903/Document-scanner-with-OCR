@@ -50,7 +50,7 @@ def skew_correction(img):
 			best_angle = angle
 	print('Best angle: {}'.format(best_angle))
 	# correct skew
-	data = inter.rotate(img, best_angle, reshape=False, order=0,mode='reflect')
+	data = inter.rotate(img, best_angle, reshape=False, order=3,mode='reflect')
 	# img = cv2.cvtColor(data,cv2.COLOR_GRAY2BGR)
 	return data
 
