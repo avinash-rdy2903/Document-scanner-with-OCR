@@ -32,16 +32,14 @@ def find_score(arr, angle):
     score = np.sum((hist[1:] - hist[:-1]) ** 2)
     return hist, score
 def skew_correction(img):
-	wd, ht = img.shape[0],img.shape[1]
+	ht,wd = img.shape[0],img.shape[1]
 	pix = np.array(cv2.cvtColor(img,cv2.COLOR_BGR2GRAY), np.uint8)
 
 	bin_img = 1 - (pix / 255.0).astype('int8')
-	cv2.imwrite('binary.png',bin_img)
-
 	delta = 1
 	limit = 5
 	angles = np.arange(-limit, limit+delta, delta)
-	best_angle=-9999999
+	best_angle= -9999999
 	best_score=-9999999
 	for angle in angles:
 		hist, score = find_score(bin_img, angle)
@@ -56,7 +54,6 @@ def skew_correction(img):
 
 def order_points(pts):
 	rect = np.zeros((4, 2), dtype = "float32")
-
 	s = pts.sum(axis = 1)
 	rect[0] = pts[np.argmin(s)]
 	rect[2] = pts[np.argmax(s)]

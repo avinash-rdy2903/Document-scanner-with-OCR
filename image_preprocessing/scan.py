@@ -22,7 +22,7 @@ def edge_detection(image):
 	# cv2.waitKey(0)
 	# cv2.destroyAllWindows()
 	return edged
-def warper(orig,screenCnt,ratio,get_rgb=True):
+def warper(orig,screenCnt,ratio,get_rgb):
 	warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
 	if(get_rgb):
 		return warped
