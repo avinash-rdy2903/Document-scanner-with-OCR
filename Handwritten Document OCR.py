@@ -90,7 +90,7 @@ def make_results_dir(dir):
     except OSError:
         print('OCR Results Directory exists in the system already.')
 
-img = cv2.imread(r'C:\Users\Avinash\Desktop\New folder\OCR\test ocr\test 1.jpg')
+img = cv2.imread(src_path)
 if(img is None):
     print('Please provide a valid Image')
     sys.exit(src_path+' is not supported')
